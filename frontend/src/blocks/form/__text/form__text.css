@@ -1,0 +1,14 @@
+.form__text {
+  margin: 40px 0 0;
+  padding: 0 0 10px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.form__text::placeholder {
+  color: #c4c4c4;
+}
+
+.form__text, .form__text:active, .form__text:focus {
+  outline: none;
+}

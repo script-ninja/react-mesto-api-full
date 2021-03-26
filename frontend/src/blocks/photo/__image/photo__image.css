@@ -1,0 +1,6 @@
+.photo__image {
+  display: block;
+  margin: 0 0 10px;
+  max-width: 75vw;
+  max-height: 75vh;
+}

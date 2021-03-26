@@ -1,0 +1,31 @@
+.photo-card__like-button {
+  padding: 0;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  min-width: 21px;
+  min-height: 34px;
+  border: none;
+
+  background-color: transparent;
+  background-image: url(../../../images/photo-card__like-button.svg);
+  background-repeat: no-repeat;
+  background-size: 21px 19px;
+  background-position: top center;
+
+  transition: all 0.2s ease;
+
+  font-size: 13px;
+  line-height: 10px;
+}
+
+.photo-card__like-button, .photo-card__like-button:active, .photo-card__like-button:focus {
+  outline: none;
+}
+
+.photo-card__like-button:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}

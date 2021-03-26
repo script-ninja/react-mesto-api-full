@@ -1,0 +1,17 @@
+.header__logo-link {
+  margin: 45px 0 40px;
+  display: inline-block;
+  font-size: 0;
+  transition: opacity 0.2s ease;
+}
+
+.header__logo-link:hover {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 882px) {
+  .header__logo-link {
+    margin-top: calc(28px + (45 - 28) * (100vw - 320px) / (882 - 320));
+    margin-bottom: calc(31px + (40 - 31) * (100vw - 320px) / (882 - 320));
+  }
+}

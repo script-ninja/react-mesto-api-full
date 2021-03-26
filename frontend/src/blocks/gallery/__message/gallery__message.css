@@ -1,0 +1,21 @@
+.gallery__message {
+  display: none;
+  align-items: center;
+  margin: 40px 0;
+
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 40px;
+  color: #333333;
+  text-align: center;
+}
+
+@media screen and (max-width: 720px) {
+  .gallery__message {
+    margin: calc(20px + (40 - 20) * (100vw - 320px) / (720 - 320)) 0;
+    font-size: calc(20px + (30 - 20) * (100vw - 320px) / (720 - 320));
+    line-height: calc(28px + (40 - 28) * (100vw - 320px) / (720 - 320));
+  }
+}

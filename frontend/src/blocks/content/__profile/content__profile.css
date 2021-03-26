@@ -1,0 +1,9 @@
+.content__profile {
+  margin: 0 0 50px;
+}
+
+@media screen and (max-width: 720px) {
+  .content__profile {
+    margin-bottom: calc(36px + (50 - 36) * (100vw - 320px) / (720 - 320));
+  }
+}

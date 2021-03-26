@@ -1,0 +1,11 @@
+.header__logo {
+  display: block;
+  max-width: 142px;
+  opacity: inherit;
+}
+
+@media screen and (max-width: 882px) {
+  .header__logo {
+    max-width: calc(103px + (142 - 103) * (100vw - 320px) / (882 - 320));
+  }
+}

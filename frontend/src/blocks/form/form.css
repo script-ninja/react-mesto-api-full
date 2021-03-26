@@ -1,0 +1,28 @@
+.form {
+  position: relative;
+  margin: 0 40px;
+  padding: 36px;
+  border-radius: 10px;
+  width: 430px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  background-color: #fff;
+
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000;
+}
+
+@media screen and (max-width: 510px) {
+  .form {
+    padding: 30px 20px;
+    font-size: calc(12px + (14 - 12) * (100vw - 320px) / (510 - 320));
+    line-height: calc(15px + (17 - 15) * (100vw - 320px) / (510 - 320));
+  }
+}

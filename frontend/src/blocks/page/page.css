@@ -1,0 +1,5 @@
+.page {
+  display: flow-root;
+  min-height: 100vh;
+  background-color: #000;
+}

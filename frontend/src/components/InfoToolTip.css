@@ -1,0 +1,50 @@
+.infotooltip {
+  position: relative;
+  margin: 0 40px;
+  padding: 60px 36px;
+  border-radius: 10px;
+  width: 430px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: #fff;
+
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000;
+}
+
+.infotooltip__img {
+  margin: 0;
+  max-width: 120px;
+  max-height: 120px;
+}
+
+.infotooltip__title {
+  margin: 30px 0 0 0;
+
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+
+  white-space: pre-line;
+}
+
+@media screen and (max-width: 510px) {
+  .infotooltip {
+    padding: 30px 20px;
+    font-size: calc(12px + (14 - 12) * (100vw - 320px) / (510 - 320));
+    line-height: calc(15px + (17 - 15) * (100vw - 320px) / (510 - 320));
+  }
+  .infotooltip__title {
+    font-size: calc(18px + (24 - 18) * (100vw - 320px) / (510 - 320));
+    line-height: calc(22px + (29 - 22) * (100vw - 320px) / (510 - 320));
+  }
+}

@@ -1,0 +1,13 @@
+.photo {
+  position: relative;
+  margin: 0;
+  max-width: 75vw;
+  max-height: 75vh;
+
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  color: #fff;
+}
