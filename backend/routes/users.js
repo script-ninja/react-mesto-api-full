@@ -17,12 +17,26 @@ router.route('/')
   }), createUser);
 
 router.route('/:id')
-  .get(getUser);
+  .get(celebrate({
+    params: Joi.object().keys({
+      id: Joi.string().alphanum().length(24),
+    }),
+  }), getUser);
 
 router.route('/me')
-  .patch(updateProfile);
+  .patch(celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().min(2).max(30),
+      about: Joi.string().min(2).max(30),
+      avatar: Joi.string(),
+    }),
+  }), updateProfile);
 
 router.route('/me/avatar')
-  .patch(updateAvatar);
+  .patch(celebrate({
+    body: Joi.object().keys({
+      avatar: Joi.string(),
+    }),
+  }), updateAvatar);
 
 module.exports = router;

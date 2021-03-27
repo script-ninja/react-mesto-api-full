@@ -28,7 +28,7 @@ app.use(notFoundRouter);
 app.use(errors());
 
 app.use((err, req, res, next) => {
-  const { message, status = 500 } = err;
+  const { message = 'Ошибка сервера', status = 500 } = err;
   res.status(status).send({ message });
 });
 
