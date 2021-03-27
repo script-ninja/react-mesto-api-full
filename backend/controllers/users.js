@@ -1,4 +1,5 @@
 const UserModel = require('../models/user');
+const bcrypt = require('bcryptjs');
 
 function getUsers(req, res) {
   UserModel.find({})
@@ -25,17 +26,30 @@ function getUser(req, res) {
 }
 
 function createUser(req, res) {
-  UserModel.create(req.body)
-    .then((user) => {
-      res.status(200).send(user);
-    })
-    .catch((error) => {
+  bcrypt.hash(req.body.password, 10)
+  .then((hash) => {
+    req.body.password = hash;
+    return UserModel.create(req.body);
+  })
+  .then((user) => {
+    res.status(200).send(user);
+  })
+  .catch((error) => {
+    if (
+      error.name === 'MongoError'
+      && error.code === 11000
+      && error.keyValue.email === req.body.email
+    ) {
+      res.status(400).send({ message: 'Указанный email уже зарегистрирован' });
+    }
+    else {
       const code = (error.name === 'ValidationError') ? 400 : 500;
       const err = {
         message: (code === 400) ? error.message : 'Не удалось добавить пользователя'
       };
       res.status(code).send(err);
-    });
+    }
+  });
 }
 
 function updateProfile(req, res) {
