@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const notFoundRouter = require('./routes/notFound');
@@ -23,6 +24,8 @@ app.use(bodyParser.json());
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use(notFoundRouter);
+
+app.use(errors);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
