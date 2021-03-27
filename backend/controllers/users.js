@@ -2,6 +2,23 @@ const UserModel = require('../models/user');
 const bcrypt = require('bcryptjs');
 const ExtendedError = require('../errors/ExtendedError');
 
+// auth ----
+// login: добавить отправку токена
+function login(req, res, next) {
+  const { email, password } = req.body;
+  UserModel.findOne({ email })
+  .then((user) => {
+    if (!user) throw new ExtendedError('Неправильные почта или пароль', 401);
+    return bcrypt.compare(password, user.password);
+  })
+  .then((matched) => {
+    if (!matched) throw new ExtendedError('Неправильные почта или пароль', 401);
+    res.status(200).send({ message: 'tOKen' });
+  })
+  .catch(next);
+}
+// ---------
+
 function getUsers(req, res) {
   UserModel.find({})
     .then((users) => {
@@ -93,5 +110,5 @@ function updateAvatar(req, res) {
 }
 
 module.exports = {
-  getUsers, getUser, createUser, updateProfile, updateAvatar,
+  getUsers, getUser, createUser, updateProfile, updateAvatar, login,
 };

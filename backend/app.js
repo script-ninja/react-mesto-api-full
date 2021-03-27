@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+
+const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const notFoundRouter = require('./routes/notFound');
@@ -21,6 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(bodyParser.json());
+app.use('/', authRouter);
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use(notFoundRouter);
