@@ -1,5 +1,6 @@
 const UserModel = require('../models/user');
 const bcrypt = require('bcryptjs');
+const ExtendedError = require('../errors/ExtendedError');
 
 function getUsers(req, res) {
   UserModel.find({})
@@ -25,7 +26,7 @@ function getUser(req, res) {
     });
 }
 
-function createUser(req, res) {
+function createUser(req, res, next) {
   bcrypt.hash(req.body.password, 10)
   .then((hash) => {
     req.body.password = hash;
@@ -35,21 +36,23 @@ function createUser(req, res) {
     res.status(200).send(user);
   })
   .catch((error) => {
-    if (
-      error.name === 'MongoError'
-      && error.code === 11000
-      && error.keyValue.email === req.body.email
-    ) {
-      res.status(400).send({ message: 'Указанный email уже зарегистрирован' });
+    let status = 500;
+    let message = 'Не удалось добавить пользователя';
+    switch(error.name) {
+      case 'ValidationError':
+        status = 400;
+        message = error.message;
+        break;
+      case 'MongoError':
+        if (error.code === 11000 && error.keyValue.email === req.body.email) {
+          status = 400;
+          message = 'Указанный email уже зарегистрирован';
+        }
+        break;
     }
-    else {
-      const code = (error.name === 'ValidationError') ? 400 : 500;
-      const err = {
-        message: (code === 400) ? error.message : 'Не удалось добавить пользователя'
-      };
-      res.status(code).send(err);
-    }
-  });
+    throw new ExtendedError(message, status);
+  })
+  .catch(next);
 }
 
 function updateProfile(req, res) {

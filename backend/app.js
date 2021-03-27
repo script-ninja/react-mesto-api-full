@@ -25,7 +25,12 @@ app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use(notFoundRouter);
 
-app.use(errors);
+app.use(errors());
+
+app.use((err, req, res, next) => {
+  const { message, status = 500 } = err;
+  res.status(status).send({ message });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
