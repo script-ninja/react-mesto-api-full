@@ -1,59 +1,4 @@
 const UserModel = require('../models/user');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const ExtendedError = require('../errors/ExtendedError');
-
-// auth ----
-
-// login
-function login(req, res, next) {
-  const { email, password } = req.body;
-  UserModel.findOne({ email }).select('+password')
-  .then((user) => {
-    if (!user) throw new ExtendedError('Неправильные почта или пароль', 401);
-
-    return bcrypt.compare(password, user.password)
-      .then((matched) => {
-        if (!matched) throw new ExtendedError('Неправильные почта или пароль', 401);
-        res.status(200).send({
-          token: jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d'})
-        });
-      });
-  })
-  .catch(next);
-}
-
-// register
-function createUser(req, res, next) {
-  bcrypt.hash(req.body.password, 10)
-  .then((hash) => {
-    req.body.password = hash;
-    return UserModel.create(req.body);
-  })
-  .then((user) => {
-    user.password = undefined;
-    res.status(201).send(user);
-  })
-  .catch((error) => {
-    let status = 500;
-    let message = 'Не удалось добавить пользователя';
-    switch(error.name) {
-      case 'ValidationError':
-        status = 400;
-        message = error.message;
-        break;
-      case 'MongoError':
-        if (error.code === 11000 && error.keyValue.email === req.body.email) {
-          status = 400;
-          message = 'Указанный email уже зарегистрирован';
-        }
-        break;
-    }
-    throw new ExtendedError(message, status);
-  })
-  .catch(next);
-}
-// ---------
 
 function getUsers(req, res) {
   UserModel.find({})
@@ -117,5 +62,5 @@ function updateAvatar(req, res) {
 }
 
 module.exports = {
-  getUsers, getUser, createUser, updateProfile, updateAvatar, login,
+  getUsers, getUser, updateProfile, updateAvatar,
 };
