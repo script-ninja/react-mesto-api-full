@@ -5,7 +5,7 @@ const ExtendedError = require('../errors/ExtendedError');
 
 // auth ----
 
-// login: добавить отправку токена
+// login
 function login(req, res, next) {
   const { email, password } = req.body;
   UserModel.findOne({ email }).select('+password')
