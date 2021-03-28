@@ -24,6 +24,20 @@ function getUser(req, res) {
     });
 }
 
+function getCurrentUser(req, res) {
+  UserModel.findById(req.user._id)
+    .then((user) => {
+      res.status(user ? 200 : 404).send(user || { message: 'Нет пользователя с таким ID' });
+    })
+    .catch((error) => {
+      const code = (error.name === 'CastError') ? 400 : 500;
+      const err = {
+        message: (code === 400) ? 'Некорректный ID' : 'Не удалось получить пользователя'
+      }
+      res.status(code).send(err);
+    });
+}
+
 function updateProfile(req, res) {
   UserModel.findByIdAndUpdate(
     req.user._id,
@@ -62,5 +76,5 @@ function updateAvatar(req, res) {
 }
 
 module.exports = {
-  getUsers, getUser, updateProfile, updateAvatar,
+  getUsers, getUser, getCurrentUser, updateProfile, updateAvatar,
 };
