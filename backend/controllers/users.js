@@ -1,5 +1,6 @@
 const UserModel = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const ExtendedError = require('../errors/ExtendedError');
 
 // auth ----
@@ -10,11 +11,14 @@ function login(req, res, next) {
   UserModel.findOne({ email }).select('+password')
   .then((user) => {
     if (!user) throw new ExtendedError('Неправильные почта или пароль', 401);
-    return bcrypt.compare(password, user.password);
-  })
-  .then((matched) => {
-    if (!matched) throw new ExtendedError('Неправильные почта или пароль', 401);
-    res.status(200).send({ message: 'tOKen' });
+
+    return bcrypt.compare(password, user.password)
+      .then((matched) => {
+        if (!matched) throw new ExtendedError('Неправильные почта или пароль', 401);
+        res.status(200).send({
+          token: jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d'})
+        });
+      });
   })
   .catch(next);
 }
