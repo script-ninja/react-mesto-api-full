@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const celebrateErrors = require('celebrate').errors;
 
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
@@ -25,11 +26,13 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(requestLogger);
 app.use('/', authRouter);
 app.use('/users', auth, usersRouter);
 app.use('/cards', auth, cardsRouter);
 app.use(notFoundRouter);
 
+app.use(errorLogger);
 app.use(celebrateErrors());
 app.use(errors);
 
