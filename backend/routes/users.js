@@ -7,13 +7,6 @@ const {
 router.route('/')
   .get(getUsers);
 
-// router.route('/:id')
-// .get(celebrate({
-//   params: Joi.object().keys({
-//     id: Joi.string().alphanum().length(24),
-//   }),
-// }), getUser);
-
 router.route('/me')
   .get(getCurrentUser)
   .patch(celebrate({
@@ -27,7 +20,7 @@ router.route('/me')
 router.route('/me/avatar')
   .patch(celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string(),
+      avatar: Joi.string().required(),
     }),
   }), updateAvatar);
 

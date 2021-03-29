@@ -10,7 +10,7 @@ class API {
       .then(data => {
         return res.ok
           ? Promise.resolve(data)
-          : Promise.reject(`${data.error || data.message}.`);
+          : Promise.reject(`${data.validation ? data.validation.body.message : data.message}.`);
       });
   }
 

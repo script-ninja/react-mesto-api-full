@@ -85,24 +85,6 @@ export default function App() {
     browserHistory.push('/signin');
   }
 
-  function handleUpdateUser({ name, about }) {
-    api.setUserData({ name, about })
-    .then((user) => {
-      setCurrentUser({ ...currentUser, ...user });
-      closeAllPopups();
-    })
-    .catch(error => { console.log(error); });
-  }
-
-  function handleUpdateAvatar(url) {
-    api.setUserAvatar(url)
-    .then((user) => {
-      setCurrentUser({ ...currentUser, ...user });
-      closeAllPopups();
-    })
-    .catch(error => { console.log(error); });
-  }
-
   function onRegister(userData) {
     auth.register(userData)
     .then(res => {
@@ -114,6 +96,28 @@ export default function App() {
       console.log(err);
       openInfoToolTip({ isLoading: false, success: false, message: err });
     });
+  }
+
+  function handleUpdateUser({ name, about }) {
+    api.setUserData({ name, about })
+    .then((user) => {
+      setCurrentUser({ ...currentUser, ...user });
+      closeAllPopups();
+    })
+    .catch(err => {
+      console.log(err);
+      closeAllPopups();
+      openInfoToolTip({ isLoading: false, success: false, message: err });
+    });
+  }
+
+  function handleUpdateAvatar(url) {
+    api.setUserAvatar(url)
+    .then((user) => {
+      setCurrentUser({ ...currentUser, ...user });
+      closeAllPopups();
+    })
+    .catch(error => { console.log(error); });
   }
 
 
@@ -149,6 +153,7 @@ export default function App() {
     })
     .catch(error => { console.log(error); });
   }
+
 
   // Popups ====
   const [isEditAvatarPopupOpen, openAvatarPopup] = React.useState(false);
