@@ -9,11 +9,12 @@ import EditAvatarPopup from './EditAvatarPopup';
 import EditProfilePopup from './EditProfilePopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
+import NotFound from './NotFound';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import api from '../utils/api';
 import auth from '../utils/auth';
 
-import defaultAvatar from '../images/profile__avatar.jpg'
+import defaultAvatar from '../images/profile__avatar.jpg';
 
 import Login from './Login';
 import Register from './Register';
@@ -24,46 +25,70 @@ import ProtectedRoute from './ProtectedRoute';
 export default function App() {
   const browserHistory = useHistory();
 
-
-  // User ====
-  const defaultUser = {
-    _id: null,
-    name: 'Жак-Ив Кусто',
-    about: 'Исследователь океана',
-    avatar: defaultAvatar
-  }
-  const [currentUser, setCurrentUser] = React.useState(defaultUser);
-  const [registeredUser, setRegisteredUser] = React.useState({
+  const [currentUser, setCurrentUser] = React.useState({
     _id: null,
     email: 'placeholder@email.com',
+    name: 'Жак-Ив Кусто',
+    about: 'Исследователь океана',
+    avatar: defaultAvatar,
     loggedIn: false
   });
+
+  const [cards, setCards] = React.useState([]);
+
 
   React.useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       openInfoToolTip({ ...infoToolTipState, isLoading: true, message: 'Проверка данных...' });
       auth.validateToken(token)
-      .then(res => {
-        setRegisteredUser({ ...res.data, loggedIn: true });
+      .then(user => {
+        setCurrentUser({ ...user, loggedIn: true });
         browserHistory.push('/');
+
+        return api.getCards();
       })
+      .then(cards => setCards(cards))
       .catch(err => console.log(err))
-      .finally(() => closeAllPopups());
+      .finally(() => closeAllPopups())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  React.useEffect(() => {
-    api.getUserData()
-    .then(res => setCurrentUser(res))
-    .catch(err => console.log(err));
-  }, []);
+
+  // User ====
+  function onLogin({ email, password }) {
+    auth.authorize({ email, password })
+    .then(res => {
+      localStorage.setItem('token', res.token);
+      setCurrentUser({ ...currentUser, email, loggedIn: true });
+      browserHistory.push('/');
+
+      return Promise.all([
+        api.getUserData(),
+        api.getCards()
+      ]);
+    })
+    .then(userAndCards => {
+      setCurrentUser({ ...userAndCards[0], loggedIn: true });
+      setCards(userAndCards[1]);
+    })
+    .catch(err => {
+      console.log(err);
+      openInfoToolTip({ isLoading: false, success: false, message: err });
+    });
+  }
+
+  function onLogout() {
+    setCurrentUser({ ...currentUser, loggedIn: false })
+    localStorage.removeItem('token');
+    browserHistory.push('/signin');
+  }
 
   function handleUpdateUser({ name, about }) {
     api.setUserData({ name, about })
     .then((user) => {
-      setCurrentUser(user);
+      setCurrentUser({ ...currentUser, ...user });
       closeAllPopups();
     })
     .catch(error => { console.log(error); });
@@ -72,7 +97,7 @@ export default function App() {
   function handleUpdateAvatar(url) {
     api.setUserAvatar(url)
     .then((user) => {
-      setCurrentUser(user);
+      setCurrentUser({ ...currentUser, ...user });
       closeAllPopups();
     })
     .catch(error => { console.log(error); });
@@ -91,36 +116,10 @@ export default function App() {
     });
   }
 
-  function onLogin({ email, password }) {
-    auth.authorize({ email, password })
-    .then(res => {
-      localStorage.setItem('token', res.token);
-      setRegisteredUser({ ...registeredUser, email, loggedIn: true });
-      browserHistory.push('/');
-    })
-    .catch(err => {
-      console.log(err);
-      openInfoToolTip({ isLoading: false, success: false, message: err });
-    });
-  }
-
-  function onLogout() {
-    setRegisteredUser({ ...registeredUser, loggedIn: false })
-    localStorage.removeItem('token');
-    browserHistory.push('/signin');
-  }
-
 
   // Cards ====
-  const [cards, setCards] = React.useState([]);
-  React.useEffect(() => {
-    api.getCards()
-    .then(cards => { setCards(cards); })
-    .catch(error => { console.log(error); });
-  }, []);
-
   function handleCardLike(card) {
-    const isLiked = card.likes.some(like => like._id === currentUser._id);
+    const isLiked = card.likes.some(like => like === currentUser._id);
 
     api.toggleLike(card._id, isLiked)
     .then((newCard) => {
@@ -204,13 +203,13 @@ export default function App() {
     <div className="root">
       <CurrentUserContext.Provider value={currentUser}>
         <Header
-          email={registeredUser.email}
-          loggedIn={registeredUser.loggedIn}
+          email={currentUser.email}
+          loggedIn={currentUser.loggedIn}
           onLogout={onLogout}
         />
 
         <Switch>
-          <ProtectedRoute exact path="/" condition={registeredUser.loggedIn} redirectPath="/signin">
+          <ProtectedRoute exact path="/" condition={currentUser.loggedIn} redirectPath="/signin">
             <Main
               cards={cards}
               onEditAvatar={handleEditAvatarClick}
@@ -255,7 +254,7 @@ export default function App() {
           </Route>
 
           <Route path="*">
-            <p>Error 404: Not Found.</p>
+            <NotFound />
           </Route>
         </Switch>
 

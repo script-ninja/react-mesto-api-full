@@ -45,7 +45,7 @@ function createUser(req, res, next) {
         break;
       case 'MongoError':
         if (error.code === 11000 && error.keyValue.email === req.body.email) {
-          status = 400;
+          status = 409;
           message = 'Указанный email уже зарегистрирован';
         }
         break;

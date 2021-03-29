@@ -1,3 +1,5 @@
+import { BASE_URL } from '../utils/utils';
+
 class Auth {
   constructor({ baseUrl }) {
     this._url = baseUrl;
@@ -8,7 +10,7 @@ class Auth {
       .then(data => {
         return res.ok
           ? Promise.resolve(data)
-          : Promise.reject(`Error ${res.status}: ${res.statusText}!\n${data.error || data.message}.`);
+          : Promise.reject(`${data.error || data.message}.`);
       });
   }
 
@@ -16,14 +18,15 @@ class Auth {
    * Регистрация нового пользователя
    * @param {string} email
    * @param {string} password
-   * @returns {Promise} id пользователя и email, если промис исполнен.
+   * @returns {Promise} объект пользователя, если промис исполнен.
    */
-  // {
-  //   "data": {
-  //     "_id": "5f5204c577488bcaa8b7bdf2",
-  //     "email": "email@yandex.ru"
-  //   }
-  // }
+  //  {
+  //    "name": "Жак-Ив Кусто",
+  //    "about": "Исследователь океана",
+  //    "avatar": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
+  //    "_id": "605f07d952512520e0881d15",
+  //    "email": "user@test.mail",
+  //  }
   register({ email, password }) {
     return fetch(`${this._url}/signup`, {
       method: 'POST',
@@ -64,16 +67,17 @@ class Auth {
   /**
    * Проверка валидности токена
    * @param {JsonWebToken} token
-   * @returns {Promise} id пользователя и email при исполненном промисе.
+   * @returns {Promise} объект пользователя при исполненном промисе.
    */
-  //  "data": {
-  //    "_id":"1f525cf06e02630312f3fed7",
-  //    "email":"email@email.ru"
+  //  {
+  //    "name": "Жак-Ив Кусто",
+  //    "about": "Исследователь океана",
+  //    "avatar": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
+  //    "_id": "605f07d952512520e0881d15",
+  //    "email": "user@test.mail",
   //  }
-  //  - Если токен не передан или передан без Bearer
-  //    401 — Токен не передан или передан не в том формате
-  //  - Если передан некорректный токен
-  //    401 — Переданный токен некорректен
+  //  401 — Токен не передан или передан не в том формате
+  //  401 — Переданный токен некорректен
   validateToken(token) {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
@@ -87,5 +91,5 @@ class Auth {
 }
 
 export default new Auth({
-  baseUrl: 'https://auth.nomoreparties.co'
+  baseUrl: BASE_URL
 });

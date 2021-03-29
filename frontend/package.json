@@ -1,6 +1,10 @@
 {
   "name": "project-mesto-react",
-  "version": "0.1.0",
+  "version": "15.0.0",
+  "description": "Фронтенд сервиса публикации фотографий",
+  "main": "app.js",
+  "author": "script-ninja",
+  "license": "ISC",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",

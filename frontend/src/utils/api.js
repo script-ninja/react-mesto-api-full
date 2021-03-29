@@ -1,20 +1,25 @@
+import { BASE_URL } from '../utils/utils';
+
 class API {
   constructor(options) {
     this._baseURL = options.url;
-    this._token = options.token;
   }
 
-  _handleResponse(response) {
-    return response.ok
-      ? response.json()
-      : Promise.reject(`Error ${response.status}: ${response.statusText}.`);
+  _handleResponse(res) {
+    return res.json()
+      .then(data => {
+        return res.ok
+          ? Promise.resolve(data)
+          : Promise.reject(`${data.error || data.message}.`);
+      });
   }
 
   getUserData() {
     return fetch(`${this._baseURL}/users/me`, {
       method: 'GET',
       headers: {
-        authorization: this._token
+        'authorization': `Bearer ${localStorage.getItem('token')}`,
+        'content-type': 'application/json'
       }
     })
     .then(response => {
@@ -26,7 +31,7 @@ class API {
     return fetch(`${this._baseURL}/users/me`, {
       method: 'PATCH',
       headers: {
-        authorization: this._token,
+        'authorization': `Bearer ${localStorage.getItem('token')}`,
         'content-type': 'application/json'
       },
       body: JSON.stringify({
@@ -43,7 +48,7 @@ class API {
     return fetch(`${this._baseURL}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: this._token,
+        'authorization': `Bearer ${localStorage.getItem('token')}`,
         'content-type': 'application/json'
       },
       body: JSON.stringify({
@@ -59,7 +64,8 @@ class API {
     return fetch(`${this._baseURL}/cards`, {
       method: 'GET',
       headers: {
-        authorization: this._token
+        'authorization': `Bearer ${localStorage.getItem('token')}`,
+        'content-type': 'application/json'
       }
     })
     .then(response => {
@@ -71,7 +77,7 @@ class API {
     return fetch(`${this._baseURL}/cards`, {
       method: 'POST',
       headers: {
-        authorization: this._token,
+        'authorization': `Bearer ${localStorage.getItem('token')}`,
         'content-type': 'application/json'
       },
       body: JSON.stringify({
@@ -88,7 +94,8 @@ class API {
     return fetch(`${this._baseURL}/cards/${cardID}`, {
       method: 'DELETE',
       headers: {
-        authorization: this._token
+        'authorization': `Bearer ${localStorage.getItem('token')}`,
+        'content-type': 'application/json'
       }
     })
     .then(response => {
@@ -97,10 +104,11 @@ class API {
   }
 
   toggleLike(cardID, isLiked) {
-    return fetch(`${this._baseURL}/cards/likes/${cardID}`, {
+    return fetch(`${this._baseURL}/cards/${cardID}/likes`, {
       method: isLiked ? 'DELETE' : 'PUT',
       headers: {
-        authorization: this._token
+        'authorization': `Bearer ${localStorage.getItem('token')}`,
+        'content-type': 'application/json'
       }
     })
     .then(response => {
@@ -110,6 +118,5 @@ class API {
 }
 
 export default new API({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-18',
-  token: '80cc9190-bc61-4b09-b6f2-ea43f973474f'
+  url: BASE_URL
 });

@@ -22,7 +22,7 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
       <figcaption className="photo-card__caption">
         <h2 className="photo-card__title" title={card.name}>{card.name}</h2>
         <button className={
-            `photo-card__like-button${(card.likes.some(i => i._id === currentUser._id) ?
+            `photo-card__like-button${(card.likes.some(likeOwner => likeOwner === currentUser._id) ?
             ' photo-card__like-button_liked' : '')}`
           }
           type="button"
@@ -31,7 +31,7 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
           {card.likes.length}
         </button>
         {
-          (card.owner._id === currentUser._id) &&
+          (card.owner === currentUser._id) &&
           <button className="photo-card__del-button" type="button" onClick={handleDelete}></button>
         }
       </figcaption>

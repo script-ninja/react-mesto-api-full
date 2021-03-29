@@ -46,7 +46,7 @@ function deleteCard(req, res, next) {
     .then((card) => {
       if (!card) throw new ExtendedError('Нет карточки с таким ID', 404);
 
-      if (card.owner !== req.user._id) {
+      if (String(card.owner) !== String(req.user._id)) {
         throw new ExtendedError('Нельзя удалить чужую карточку', 403);
       }
 

@@ -6,7 +6,7 @@ import './Header.css';
 export default function Header({ email, loggedIn, onLogout }) {
   return (
     <header className="header page__header">
-      <a className="header__logo-link" href="https://script-ninja.github.io/mesto">
+      <a className="header__logo-link" href="/" title="На главную">
         <img className="header__logo" src={logo} alt="Логотип Mesto" />
       </a>
       {
