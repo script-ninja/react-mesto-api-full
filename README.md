@@ -1,11 +1,12 @@
-<h1 align="right"><a href="http://mesto.nomoredomains.club" target="_blank"><img src="./frontend/src/images/header__logo_dark.svg" align="left">Проект: Место</a></h1>
+<h1 align="right"><a href="http://camp.nomoredomains.icu" target="_blank"><img src="./frontend/src/images/header__logo_dark.svg" align="left">Проект: Место</a></h1>
 <br />
 
 Сервис публикации фотографий с возможностью регистрации пользователей.
 
 | Описание | Адреса |
 | :-- | --: |
-| Доменное имя:     | [mesto.nomoredomains.club](http://mesto.nomoredomains.club) |
+| Доменное имя:     | [camp.nomoredomains.icu](http://camp.nomoredomains.icu) |
+| API: | [api.camp.nomoredomains.icu](http://api.camp.nomoredomains.icu) |
 | IP-адрес сервера: | 178.154.205.131 |
 <br />
 
