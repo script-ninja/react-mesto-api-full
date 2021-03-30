@@ -18,7 +18,11 @@ const { PORT = 3001 } = process.env;
 const app = express();
 
 const corsOptions = {
-  origin: [ 'http://localhost:3000' ]
+  origin: [
+    'http://localhost:3000',
+    'http://camp.nomoredomains.icu',
+    'https://camp.nomoredomains.icu'
+  ]
 };
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
