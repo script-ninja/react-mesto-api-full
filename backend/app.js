@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -35,7 +34,6 @@ app.use(bodyParser.json());
 
 app.use(requestLogger);
 
-app.use(express.static(path.join(__dirname, 'public')));
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
