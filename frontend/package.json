@@ -2,7 +2,6 @@
   "name": "project-mesto-react",
   "version": "15.0.0",
   "description": "Фронтенд сервиса публикации фотографий",
-  "main": "app.js",
   "author": "script-ninja",
   "license": "ISC",
   "private": true,

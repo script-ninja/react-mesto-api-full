@@ -1,20 +1,15 @@
 <h1 align="right"><a href="https://script-ninja.github.io/mesto/index.html" target="_blank"><img src="./frontend/src/images/header__logo_dark.svg" align="left">Проект: Место</a></h1>
-
-Сервис публикации фотографий с возможностью регистрации профиля
-
 <br />
 
-### Фронтенд:
-`npm run start` - запуск локального сервера в режиме разработки
+Сервис публикации фотографий с возможностью регистрации пользователей.
 
+### Фронтенд:
+`npm run start` - запуск локального сервера<br />
 `npm run build` - собрать проект в папку build
 
 ### Бэкенд:
-`npm run dev` - запуск dev-сервера с hotreload
-
+`npm run dev` - запуск локального сервера с hotreload<br />
 `npm run start` - запуск приложения
-
-<br />
 
 ### Использованные технологии
 - HTML5, CSS3, ECMAScript6+
@@ -28,9 +23,9 @@
 - CreateReactApp
 - Бэкенд на Node.JS + Express
 
-<br />
-
 #
 
 ### TODO
 - переписать весь старый код под централизованную обработку ошибок
+- сохранять токен авторизации в куки
+- свой обработчик для ошибок сгенерированных модулем celebrate

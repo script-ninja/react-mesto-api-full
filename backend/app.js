@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -14,7 +15,7 @@ const cardsRouter = require('./routes/cards');
 const notFoundRouter = require('./routes/notFound');
 const errors = require('./middlewares/errors');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 const app = express();
 
 const corsOptions = {
@@ -33,6 +34,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(requestLogger);
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', authRouter);
 app.use('/users', auth, usersRouter);
 app.use('/cards', auth, cardsRouter);
