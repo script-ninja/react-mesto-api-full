@@ -39,9 +39,9 @@ app.get('/crash-test', () => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
-app.use('/api', authRouter);
-app.use('/api/users', auth, usersRouter);
-app.use('/api/cards', auth, cardsRouter);
+app.use('/', authRouter);
+app.use('/users', auth, usersRouter);
+app.use('/cards', auth, cardsRouter);
 app.use(notFoundRouter);
 
 app.use(errorLogger);
