@@ -18,8 +18,8 @@ function getUser(req, res) {
     .catch((error) => {
       const code = (error.name === 'CastError') ? 400 : 500;
       const err = {
-        message: (code === 400) ? 'Некорректный ID' : 'Не удалось получить пользователя'
-      }
+        message: (code === 400) ? 'Некорректный ID' : 'Не удалось получить пользователя',
+      };
       res.status(code).send(err);
     });
 }
@@ -32,8 +32,8 @@ function getCurrentUser(req, res) {
     .catch((error) => {
       const code = (error.name === 'CastError') ? 400 : 500;
       const err = {
-        message: (code === 400) ? 'Некорректный ID' : 'Не удалось получить пользователя'
-      }
+        message: (code === 400) ? 'Некорректный ID' : 'Не удалось получить пользователя',
+      };
       res.status(code).send(err);
     });
 }
@@ -50,7 +50,7 @@ function updateProfile(req, res) {
     .catch((error) => {
       const code = (error.name === 'ValidationError' || error.name === 'CastError') ? 400 : 500;
       const err = {
-        message: (code === 400) ? error.message : 'Не удалось обновить профиль'
+        message: (code === 400) ? error.message : 'Не удалось обновить профиль',
       };
       res.status(code).send(err);
     });
@@ -60,7 +60,7 @@ function updateAvatar(req, res) {
   const { avatar } = req.body;
   UserModel.findByIdAndUpdate(
     req.user._id,
-    { avatar: avatar },
+    { avatar },
     { new: true, runValidators: true, upsert: true },
   )
     .then((user) => {
@@ -69,7 +69,7 @@ function updateAvatar(req, res) {
     .catch((error) => {
       const code = (error.name === 'ValidationError' || error.name === 'CastError') ? 400 : 500;
       const err = {
-        message: (code === 400) ? error.message : 'Не удалось обновить аватар'
+        message: (code === 400) ? error.message : 'Не удалось обновить аватар',
       };
       res.status(code).send(err);
     });

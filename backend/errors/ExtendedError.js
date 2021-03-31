@@ -3,4 +3,4 @@ module.exports = class ExtendedError extends Error {
     super(message);
     this.status = status;
   }
-}
+};

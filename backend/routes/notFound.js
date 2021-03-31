@@ -1,7 +1,8 @@
 const router = require('express').Router();
+const ExtendedError = require('../errors/ExtendedError');
 
-router.use((req, res) => {
-  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+router.use(() => {
+  throw new ExtendedError('Запрашиваемый ресурс не найден', 404);
 });
 
 module.exports = router;

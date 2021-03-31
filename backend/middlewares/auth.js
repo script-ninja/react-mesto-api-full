@@ -14,8 +14,7 @@ function auth(req, res, next) {
   const token = authorization.replace('Bearer ', '');
   try {
     req.user = jwt.verify(token, JWT_KEY);
-  }
-  catch (err) {
+  } catch (err) {
     throw new ExtendedError('Ошибка авторизации', 401);
   }
   next();

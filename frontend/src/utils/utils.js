@@ -1,1 +1,1 @@
-export const BASE_URL = `${window.location.protocol}//api.camp.nomoredomains.icu`;
+export const BASE_URL = `${window.location.protocol}${process.env.REACT_APP_API || '//localhost:3001'}`;

@@ -19,8 +19,8 @@ function getCard(req, res) {
     .catch((error) => {
       const code = (error.name === 'CastError') ? 400 : 500;
       const err = {
-        message: (code === 400) ? 'Некорректный ID карточки' : 'Не удалось получить карточку'
-      }
+        message: (code === 400) ? 'Некорректный ID карточки' : 'Не удалось получить карточку',
+      };
       res.status(code).send(err);
     });
 }
@@ -34,7 +34,7 @@ function createCard(req, res) {
     .catch((error) => {
       const code = (error.name === 'ValidationError') ? 400 : 500;
       const err = {
-        message: (code === 400) ? error.message : 'Не удалось добавить карточку'
+        message: (code === 400) ? error.message : 'Не удалось добавить карточку',
       };
       res.status(code).send(err);
     });
@@ -51,20 +51,20 @@ function deleteCard(req, res, next) {
       }
 
       CardModel.findByIdAndRemove(cardId)
-        .then((card) => {
-          res.send(card);
+        .then((deletedCard) => {
+          res.send(deletedCard);
         });
     })
     .catch((error) => {
       if (error.name === 'CastError') throw new ExtendedError('Некорректный ID карточки', 400);
       return Promise.reject(
         (error instanceof ExtendedError)
-        ? error
-        : new ExtendedError('Не удалось удалить карточку', 500)
+          ? error
+          : new ExtendedError('Не удалось удалить карточку', 500),
       );
     })
     .catch(next);
-};
+}
 
 function toggleLike(req, res) {
   CardModel.findByIdAndUpdate(req.params.id,
@@ -78,7 +78,7 @@ function toggleLike(req, res) {
     .catch((error) => {
       const code = (error.name === 'ValidationError' || error.name === 'CastError') ? 400 : 500;
       const err = {
-        message: (code === 400) ? error.message : 'Не удалось поставить/снять лайк'
+        message: (code === 400) ? error.message : 'Не удалось поставить/снять лайк',
       };
       res.status(code).send(err);
     });

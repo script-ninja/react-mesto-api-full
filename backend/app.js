@@ -21,8 +21,8 @@ const corsOptions = {
   origin: [
     'http://localhost:3000',
     'http://camp.nomoredomains.icu',
-    'https://camp.nomoredomains.icu'
-  ]
+    'https://camp.nomoredomains.icu',
+  ],
 };
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
